@@ -85,7 +85,7 @@ export function CaseEvaluation({
   const [step, setStep] = useState(0);
   const [result, setResult] = useState<EvaluationResult | null>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const firstRender = useRef(true);
+  const lastKey = useRef<string | null>(null);
   const reduce = useReducedMotion();
   const f = t.fields;
 
@@ -113,10 +113,16 @@ export function CaseEvaluation({
 
   // Lleva el foco al título del paso para lectores de pantalla y teclado
   useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
+    // Se compara con el valor anterior y no con un flag: en StrictMode el efecto
+    // se ejecuta dos veces al montar y el flag dejaba pasar el segundo foco,
+    // que desplazaba la página hasta esta sección.
+    const key = `${step}-${result ? "r" : ""}`;
+    if (lastKey.current === null) {
+      lastKey.current = key;
       return;
     }
+    if (lastKey.current === key) return;
+    lastKey.current = key;
     headingRef.current?.focus();
   }, [step, result]);
 
