@@ -1,100 +1,145 @@
 # Plantilla de landing para despachos de abogados
 
-Landing page lista para un despacho especializado en derecho empresarial, laboral y civil. Viene en español e inglés, con un selector ES/EN, e incluye un formulario de evaluación inicial del caso que envía la consulta por **WhatsApp**.
+Landing de una sola página para despachos de abogados. Incluye: **hero** con foto, **quiénes somos**, **especialidades**, **experiencia**, **equipo**, **metodología**, **formulario de evaluación de caso** en tres pasos y **páginas legales** (aviso legal, privacidad y cookies), en **español e inglés**.
 
-La marca "Altamira Ferrer" y su equipo son **datos ficticios de demostración**. Los datos de contacto y legales vienen como marcadores entre corchetes, por ejemplo `[NÚMERO DE WHATSAPP]`, para sustituirlos por los del despacho.
+Está hecha con **Next.js 16**, React, Tailwind CSS, shadcn/ui y Motion. No necesita base de datos ni servidor propio: el formulario no guarda datos, sino que abre WhatsApp con el mensaje ya escrito. Al compilarla se genera una carpeta de archivos estáticos (`out`) que se publica en Cloudflare Pages (ver `DESPLIEGUE-CLOUDFLARE.md`).
 
-**Sin backend:** es un **sitio estático**: HTML, CSS y JS generados en la carpeta `out/`. No tiene servidor, API, funciones serverless ni base de datos, y no instala cookies. El formulario no guarda nada. Al enviarlo se abre WhatsApp con la consulta ya escrita y el visitante solo tiene que pulsar enviar.
+Todos los datos de contacto y legales son **marcadores de ejemplo** entre corchetes (por ejemplo `[NOMBRE DEL DESPACHO]`). Antes de publicar, léete la **[guía de cumplimiento](GUIA-CUMPLIMIENTO.md)** y reemplaza cada marcador.
 
-**Tecnologías:** Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn/ui, Motion y React Hook Form.
+---
 
-## Ejecutar en local
+## 1. Requisitos
 
-Necesitas **Node.js 20.9 o superior**. El proyecto usa Node 24, indicado en `.node-version`.
+- **Node.js 24** (lo indica el archivo `.node-version`). El mínimo para compilar es Node 20.9. Verifica tu versión con `node -v`.
+- **npm** (viene con Node.js).
+
+## 2. Instalación y prueba local
+
+Abre una terminal en la carpeta del proyecto y ejecuta:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Abre http://localhost:3000. En desarrollo, la raíz `/` muestra un instante la página 404 global, que lleva a `/es`. En producción, esa redirección la hace Cloudflare Pages con `public/_redirects` (302).
+La web queda disponible en **http://localhost:3000/es** (versión en español) y **http://localhost:3000/en** (versión en inglés). Los cambios que guardes se ven al instante. Para detenerlo: `Ctrl + C`.
+
+Otros comandos:
 
 | Comando | Qué hace |
-|---|---|
-| `npm run dev` | Servidor de desarrollo |
-| `npm run build` | Genera el sitio estático en `out/` |
-| `npm run lint` | Revisa el código |
+| --- | --- |
+| `npm run dev` | Servidor local de desarrollo. |
+| `npm run build` | Compila la web estática. El resultado queda en la carpeta `out`, que es la que se publica. |
+| `npx tsc --noEmit` | Revisa los tipos de TypeScript sin generar archivos. |
 
-`npm start` no se usa: el sitio no necesita servidor. Para ver la versión compilada, sube `out/` a Cloudflare Pages o ábrela con cualquier servidor de archivos estáticos.
+## 3. Mapa de archivos
 
-## Qué personalizar
+| Qué quieres cambiar | Dónde está |
+| --- | --- |
+| Nombre del despacho, número de WhatsApp, dirección, ciudad, correo y datos de la entidad legal | `src/content/firm.ts` |
+| Textos de la web en español | `es.ts` (dentro de la carpeta de contenido o diccionario de idiomas) |
+| Textos de la web en inglés | `en.ts` (misma carpeta que el de español) |
+| Lógica de prioridad del formulario (urgencia, proceso abierto, plazo) | `evaluate.ts` (dentro de `features/case-evaluation`) |
+| Construcción del mensaje de WhatsApp | `src/features/case-evaluation/build-message.ts` |
+| Número y función de envío a WhatsApp | `src/lib/whatsapp.ts` |
+| Redirecciones y páginas 404 de Cloudflare | `public/_redirects` |
+| Fotos | Carpeta `public/` (las fotos actuales son de Unsplash, ver la guía de cumplimiento) |
 
-Para encontrar todo lo pendiente, busca `[` (corchete) y `TODO` en el proyecto.
+---
 
-| Archivo | Qué contiene |
-|---|---|
-| `src/content/firm.ts` | **Número de WhatsApp** (`whatsapp`, el TODO principal), correo, dirección y ciudad. También los datos legales (`legalEntity`): nombre del despacho, NIF/CIF, número de registro y colegio de abogados. Aquí están el **equipo** (nombres y fotos), las **fotos** de cada sección y qué abogado recibe cada área. Las fotos de demostración se cargan desde Unsplash; para usar fotos propias, colócalas en `public/` (por ejemplo `/fotos/equipo-1.jpg`) y quita el párrafo de Unsplash de la política de privacidad. |
-| `src/i18n/dictionaries/es.ts` | Todos los **textos en español**: secciones, formulario, mensaje de WhatsApp, aviso legal, privacidad y cookies. |
-| `src/i18n/dictionaries/en.ts` | Los mismos textos **en inglés**. TypeScript avisa si falta alguno. |
-| `src/app/globals.css` | Colores de la marca (variables `--navy-*`, `--gold*`, `--cream`). |
+## 4. Cómo cambiar los datos del despacho
 
-### El número de WhatsApp
+Todos los datos de contacto y legales están en **`src/content/firm.ts`**. Cada marcador entre corchetes debe sustituirse por el dato real. El número de WhatsApp es el más importante: sin él el formulario no puede enviar el mensaje.
 
-Edítalo en `src/content/firm.ts`, en el campo `whatsapp`, con el prefijo de país; por ejemplo `+34 600 123 456`. Los espacios y los símbolos se eliminan solos al generar el enlace `https://wa.me/...`.
+| Marcador | Qué es | Formato |
+| --- | --- | --- |
+| `[NÚMERO DE WHATSAPP]` | Número de WhatsApp del despacho. | Solo dígitos, con código de país y sin `+`, espacios ni guiones. Ejemplo: `573001234567`. |
+| `[DIRECCIÓN]` | Dirección de la oficina. | Texto libre. |
+| `[CIUDAD]` | Ciudad de la oficina. | Texto libre. |
+| `[CORREO ELECTRÓNICO]` | Correo de contacto. | Un correo válido. |
+| `[NOMBRE DEL DESPACHO]` | Nombre de la entidad que aparece en las páginas legales. | Texto libre. |
+| `[NIF/CIF]` | Identificador fiscal de la entidad. | Según el país del despacho. |
+| `[NÚMERO DE REGISTRO]` | Número de registro profesional o mercantil. | Texto libre. |
+| `[COLEGIO DE ABOGADOS]` | Colegio profesional al que pertenece el despacho. | Texto libre. |
+| `[FECHA DE ACTUALIZACIÓN]` | Fecha de la última revisión de las páginas legales. | Formato que prefieras, por ejemplo `15 de octubre de 2026`. |
 
-Mientras siga el marcador `[NÚMERO DE WHATSAPP]`, el formulario abre WhatsApp sin destinatario y la consola de desarrollo muestra un aviso.
+**Ejemplo, antes y después:**
 
-## Despliegue en Cloudflare Pages
+```ts
+// Antes
+whatsapp: "[NÚMERO DE WHATSAPP]",
 
-Conecta el repositorio en **Workers & Pages → Create → Pages → Connect to Git** y usa esta configuración:
+// Después
+whatsapp: "573001234567",
+```
 
-| Campo | Valor |
-|---|---|
-| Framework preset | `None` (no elijas "Next.js": ese preset es para sitios con servidor) |
-| Build command | `npm run build` |
-| Build output directory | `out` |
-| Root directory | *(vacío)* |
-| Node version | `24`. Pages lo lee de `.node-version`; si quieres fijarlo a mano, añade la variable `NODE_VERSION` = `24`. |
+Además, el número de WhatsApp tiene un comentario `TODO` en `firm.ts`. Bórralo cuando lo hayas cambiado.
 
-**Variable de entorno recomendada** (Settings → Variables and secrets, para Production y Preview):
+**Importante:** la web muestra el dato de la hero (`Reg. 04521`) como ejemplo. Cámbialo por el número de registro real del despacho o elimínalo.
 
-| Variable | Ejemplo | Para qué sirve |
-|---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | `https://www.despacho.com` | Genera las etiquetas `canonical` y `hreflang` con el dominio real. Sin ella, el sitio funciona igual, pero no se emiten. |
+---
 
-Si cambias el dominio o la variable, vuelve a desplegar: los valores se escriben en el HTML durante el build.
+## 5. Cómo cambiar las secciones
 
-### Redirecciones y páginas 404
+- **Textos**: `es.ts` y `en.ts`. Si cambias un texto en un idioma, cámbialo también en el otro para que no queden versiones distintas.
+- **Especialidades, experiencia, equipo y metodología**: se definen en los textos de `es.ts` y `en.ts` y en los componentes de cada sección.
+- **Formulario de evaluación de caso**: tiene tres pasos. La prioridad (alta, media o normal) se calcula en `evaluate.ts` según la urgencia, si hay un proceso abierto y el plazo. Cada área tiene asignado un abogado de referencia, y el formulario genera una referencia del tipo `AF-XXXXXX`.
+- **Envío por WhatsApp**: el formulario abre WhatsApp con el mensaje ya escrito. El visitante lo envía con un toque. El sitio no guarda ningún dato. Los campos son nombre, teléfono, email, situación, tipo de cliente, preferencia de contacto, urgencia, proceso abierto, plazo y descripción.
+- **Páginas legales**: aviso legal, privacidad y cookies, en ambos idiomas. Los textos son borradores con marcadores. **Deben revisarlos un abogado antes de publicar.**
 
-- `public/_redirects` se copia a `out/` en el build. Cloudflare Pages lo aplica antes de servir los archivos:
+### Notas sobre el envío
 
-  ```
-  /                     /es                      302
-  /legal/aviso-legal    /es/legal/aviso-legal    302
-  /legal/privacidad     /es/legal/privacidad     302
-  /legal/cookies        /es/legal/cookies        302
-  ```
+- El mensaje se abre desde el clic en el botón. Si el navegador bloquea la ventana, la pantalla de confirmación tiene el botón **Abrir WhatsApp de nuevo**.
+- Los datos viajan en la URL del enlace de WhatsApp. No los pegues en herramientas de analítica o registros de servidor.
 
-- **Las rutas sin idioma se redirigen con reglas explícitas** en `public/_redirects`, una por ruta, con destino al mismo path bajo `/es`. Si añades una ruta nueva sin idioma, debes añadir su regla a mano en ese archivo. No añadas reglas para rutas que existan como archivo en `out/`, porque Cloudflare Pages daría prioridad al archivo.
-- **No se usa una regla comodín** (`/* /es`). En Cloudflare Pages las reglas de `_redirects` se aplican aunque el archivo exista, así que un comodín también redirigiría `/es`, los scripts y las imágenes, y el sitio entraría en un bucle.
-- **El resto de rutas sin idioma** (por ejemplo `/contacto`) muestran `out/404.html`, que lleva de inmediato a `/es`. Lo hace con una etiqueta `<meta refresh>`, así que funciona sin JavaScript.
-- **Las rutas inexistentes dentro de un idioma** (`/es/...`, `/en/...`) muestran la página 404 de ese idioma (`out/es/404.html`, `out/en/404.html`). Cloudflare Pages siempre sirve el `404.html` más cercano.
+---
 
-## Qué incluye la compra
+## 6. Antes de publicar
 
-- La plantilla completa: código fuente, versión en español e inglés, formulario con envío por WhatsApp y páginas legales con marcadores.
-- Esta documentación.
-- Soporte para **errores de la plantilla** y **dudas de uso** (instalación, ejecución y dónde se cambia cada cosa).
+Lista de verificación:
 
-## Qué no incluye
+- [ ] Todos los marcadores de `firm.ts` reemplazados (busca `[` en el archivo).
+- [ ] Número de WhatsApp real y probado: envía una consulta de prueba desde un móvil real.
+- [ ] Textos de `es.ts` y `en.ts` revisados en ambos idiomas.
+- [ ] Páginas legales revisadas **por un abogado** y fecha de actualización puesta.
+- [ ] Las fotos del hero y del equipo son del despacho o tienes derecho a usarlas.
+- [ ] El dato de registro de la hero (`Reg. 04521`) es real o está eliminado.
+- [ ] Variable `NEXT_PUBLIC_SITE_URL` configurada en Cloudflare con el dominio real.
+- [ ] `npm run build` termina sin errores.
+- [ ] En el sitio publicado, `/es`, `/en`, `/legal/cookies` y `/es/legal/privacidad` responden como se espera.
 
-Estos trabajos se presupuestan aparte:
+Para la guía completa de publicación, ver [DESPLIEGUE-CLOUDFLARE.md](DESPLIEGUE-CLOUDFLARE.md).
 
-- Personalización de textos, fotos o colores.
-- Idiomas adicionales.
-- Integraciones (CRM, correo, calendario, analítica, etc.).
-- Redacción o adaptación del contenido legal.
+---
 
-## Aviso sobre el contenido legal
+## 7. Cómo publicar
 
-El aviso legal, la política de privacidad, la política de cookies y el texto de consentimiento son **plantillas orientativas**. No son asesoramiento jurídico. Antes de publicar el sitio, **un abogado debe revisarlos** y adaptarlos a la normativa del país del despacho, y hay que completar todos los marcadores (`[NOMBRE DEL DESPACHO]`, `[NÚMERO DE REGISTRO]`, `[DIRECCIÓN]`, etc.).
+El sitio se compila con `npm run build` y se publica la carpeta **`out`**. El hosting recomendado es **Cloudflare Pages** (tiene plan gratuito). Los pasos para una persona no técnica están en **[DESPLIEGUE-CLOUDFLARE.md](DESPLIEGUE-CLOUDFLARE.md)**.
+
+Configuración en Cloudflare Pages:
+
+- **Framework preset:** `None` (no uses el preset de Next.js, que es para sitios con servidor).
+- **Build command:** `npm run build`
+- **Build output directory:** `out`
+- **Variable de entorno:** `NEXT_PUBLIC_SITE_URL` con el dominio real, por ejemplo `https://midespacho.com`.
+
+Las rutas sin idioma (`/`, `/legal/...`) se redirigen con reglas explícitas en `public/_redirects`. Si añades una página nueva sin idioma, agrégala ahí a mano.
+
+---
+
+## 8. Soporte y próximos pasos
+
+El soporte gratuito del proveedor dura **[PLAZO DE SOPORTE]** desde la entrega, con respuesta en **[TIEMPO DE RESPUESTA]**. El mantenimiento posterior se contrata aparte: la personalización de textos, fotos, colores, idiomas adicionales, integraciones y contenido legal se presupuesta por separado. Ver `LICENSE.md`.
+
+**Si algo se rompe:**
+
+1. **La web publicada se ve mal después de un cambio.** Restaura un despliegue anterior desde el panel de Cloudflare Pages (pestaña *Deployments*).
+2. **`npm run build` da error.** El mensaje indica el archivo y la línea. Los errores más comunes son una comilla o llave sin cerrar, o una coma que falta.
+3. **Un cambio no aparece en local.** Detén `npm run dev`, vuelve a ejecutarlo y recarga con `Ctrl + F5`.
+4. **Un comando no funciona.** Verifica `node -v` y que estás dentro de la carpeta del proyecto.
+
+---
+
+## 9. Licencia
+
+El uso de este proyecto está sujeto a los términos del archivo **LICENSE.md**. El soporte, la personalización y el uso comercial se rigen por ese documento.
