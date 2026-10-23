@@ -1,10 +1,14 @@
-# Altamira Ferrer Abogados · Plantilla de landing page
+# Plantilla de landing para despachos de abogados
 
-Landing page para una firma de abogados especializada en derecho empresarial, laboral y civil. Está disponible en español y en inglés, con un selector ES/EN, e incluye un formulario de evaluación inicial del caso.
+Landing page lista para un despacho especializado en derecho empresarial, laboral y civil. Viene en español e inglés, con un selector ES/EN, e incluye un formulario de evaluación inicial del caso que envía la consulta por **WhatsApp**.
 
-**Tecnologías:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, shadcn/ui, Motion y React Hook Form.
+La marca "Altamira Ferrer" y su equipo son **datos ficticios de demostración**. Los datos de contacto y legales vienen como marcadores entre corchetes, por ejemplo `[NÚMERO DE WHATSAPP]`, para sustituirlos por los del despacho.
 
-## Arrancar en local
+**Sin backend:** el sitio no tiene servidor de datos, API ni base de datos. El formulario no guarda nada. Al enviarlo se abre WhatsApp con la consulta ya escrita y el visitante solo tiene que pulsar enviar.
+
+**Tecnologías:** Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn/ui, Motion y React Hook Form.
+
+## Ejecutar en local
 
 Necesitas **Node.js 18 o superior**.
 
@@ -13,71 +17,47 @@ npm install
 npm run dev
 ```
 
-Abre http://localhost:3000. La raíz redirige a `/es` o a `/en` según el idioma del navegador, o según el idioma que el visitante haya elegido antes con el selector.
+Abre http://localhost:3000. La raíz redirige a `/es` o `/en` según el idioma del navegador.
 
 | Comando | Qué hace |
 |---|---|
 | `npm run dev` | Servidor de desarrollo |
-| `npm run build` | Compila para producción (prerenderiza `/es` y `/en`) |
+| `npm run build` | Compila para producción |
 | `npm start` | Sirve la versión compilada |
-| `npm run lint` | Revisa el código con ESLint |
+| `npm run lint` | Revisa el código |
 
-## Estructura
+## Qué personalizar
 
-```
-src/
-├── proxy.ts                  # Redirige "/" al idioma adecuado
-├── app/
-│   ├── globals.css           # Colores (marino y dorado), tipografías y escalas
-│   └── [lang]/
-│       ├── layout.tsx        # <html lang>, fuentes y metadatos SEO por idioma
-│       └── page.tsx          # Monta la página y reparte los textos a cada sección
-├── i18n/
-│   ├── config.ts             # Idiomas disponibles y utilidad format()
-│   ├── get-dictionary.ts
-│   └── dictionaries/
-│       ├── es.ts             # TODOS los textos en español (idioma base)
-│       └── en.ts             # Traducción al inglés (TypeScript exige la misma forma)
-├── content/
-│   └── firm.ts               # Datos que no se traducen: teléfono, correo, dirección, fotos
-├── components/
-│   ├── layout/               # Navbar, footer, logo y selector de idioma
-│   ├── sections/             # Hero, quiénes somos, especialidades, experiencia, equipo, metodología
-│   ├── shared/               # Piezas reutilizables (botón dorado, etiquetas, animación de entrada)
-│   └── ui/                   # Componentes de shadcn/ui
-├── features/
-│   └── case-evaluation/      # Formulario de evaluación del caso
-│       ├── case-evaluation.tsx   # Sección y formulario en 3 pasos
-│       ├── result-view.tsx       # Resultado: prioridad, abogado asignado y documentos
-│       ├── form-fields.tsx       # Campos accesibles (fieldset, tarjetas de opción)
-│       ├── evaluate.ts           # Cálculo de la prioridad (lógica pura, sin React)
-│       └── types.ts
-└── lib/utils.ts
-```
+Para encontrar todo lo pendiente, busca `[` (corchete) y `TODO` en el proyecto.
 
-## Cómo personalizarla
+| Archivo | Qué contiene |
+|---|---|
+| `src/content/firm.ts` | **Número de WhatsApp** (`whatsapp`, el TODO principal), correo, dirección y ciudad. También los datos legales (`legalEntity`): nombre del despacho, NIF/CIF, número de registro y colegio de abogados. Aquí están el **equipo** (nombres y fotos), las **fotos** de cada sección y qué abogado recibe cada área. |
+| `src/i18n/dictionaries/es.ts` | Todos los **textos en español**: secciones, formulario, mensaje de WhatsApp, aviso legal, privacidad y cookies. |
+| `src/i18n/dictionaries/en.ts` | Los mismos textos **en inglés**. TypeScript avisa si falta alguno. |
+| `src/app/globals.css` | Colores de la marca (variables `--navy-*`, `--gold*`, `--cream`). |
 
-- **Textos:** se editan en `src/i18n/dictionaries/es.ts` y `en.ts`. Ningún componente tiene texto escrito a mano.
-- **Contacto, dirección y fotos:** están en `src/content/firm.ts`. Las imágenes vienen de Unsplash; para usar fotos propias, colócalas en `public/` y cambia las rutas.
-- **Colores y tipografías:** las variables `--navy-*`, `--gold*` y `--cream` están en `src/app/globals.css`. Las fuentes (Playfair Display y Manrope) se cargan en `src/app/[lang]/layout.tsx`.
-- **Criterio de prioridad del formulario:** se cambia en `src/features/case-evaluation/evaluate.ts`.
+### El número de WhatsApp
 
-### Añadir un idioma
+Edítalo en `src/content/firm.ts`, en el campo `whatsapp`, con el prefijo de país; por ejemplo `+34 600 123 456`. Los espacios y los símbolos se eliminan solos al generar el enlace `https://wa.me/...`.
 
-1. Crea `src/i18n/dictionaries/fr.ts` con el tipo `Dictionary`, copiando `en.ts`.
-2. Añade `"fr"` a `locales` y su etiqueta a `localeSwitch` en `src/i18n/config.ts`.
-3. Regístralo en `src/i18n/get-dictionary.ts`.
+Mientras siga el marcador `[NÚMERO DE WHATSAPP]`, el formulario abre WhatsApp sin destinatario y la consola de desarrollo muestra un aviso.
 
-## Conectar el formulario
+## Qué incluye la compra
 
-Ahora mismo el envío es **simulado**: muestra el resultado, pero los datos no van a ningún sitio. Para recibirlos, busca el `TODO` en `src/features/case-evaluation/case-evaluation.tsx`, dentro de la función `onSubmit`, y envíalos a tu backend, a tu CRM o a un servicio como Formspree.
+- La plantilla completa: código fuente, versión en español e inglés, formulario con envío por WhatsApp y páginas legales con marcadores.
+- Esta documentación.
+- Soporte para **errores de la plantilla** y **dudas de uso** (instalación, ejecución y dónde se cambia cada cosa).
 
-## Publicar
+## Qué no incluye
 
-Para que los enlaces canónicos y `hreflang` usen tu dominio, define la variable `NEXT_PUBLIC_SITE_URL` (por ejemplo, `https://altamiraferrer.com`). Después:
+Estos trabajos se presupuestan aparte:
 
-```bash
-npm run build
-```
+- Personalización de textos, fotos o colores.
+- Idiomas adicionales.
+- Integraciones (CRM, correo, calendario, analítica, etc.).
+- Redacción o adaptación del contenido legal.
 
-El proyecto se puede desplegar tal cual en Vercel o en cualquier hosting compatible con Next.js.
+## Aviso sobre el contenido legal
+
+El aviso legal, la política de privacidad, la política de cookies y el texto de consentimiento son **plantillas orientativas**. No son asesoramiento jurídico. Antes de publicar el sitio, **un abogado debe revisarlos** y adaptarlos a la normativa del país del despacho, y hay que completar todos los marcadores (`[NOMBRE DEL DESPACHO]`, `[NÚMERO DE REGISTRO]`, `[DIRECCIÓN]`, etc.).

@@ -29,4 +29,5 @@ export type EvaluationResult = {
   area: AreaId;
   situation: string;
   priority: Priority;
+  whatsappUrl: string; // para reabrir WhatsApp si el navegador lo bloqueó
 };

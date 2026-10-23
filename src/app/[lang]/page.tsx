@@ -36,9 +36,9 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <Experience t={t.experience} />
         <Team t={t.team} />
         <Process t={t.process} />
-        <CaseEvaluation t={t.evaluation} firmSuffix={suffix} />
+        <CaseEvaluation t={t.evaluation} lang={lang} />
       </main>
-      <Footer t={t.footer} nav={t.nav.items} suffix={suffix} />
+      <Footer lang={lang} t={t.footer} nav={t.nav.items} suffix={suffix} />
       <ScrollToHash />
     </>
   );

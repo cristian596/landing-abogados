@@ -3,11 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm, useWatch, type FieldPath } from "react-hook-form";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, Clock, Loader2, Mail, MapPin, Phone } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Clock,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Send,
+} from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { firm } from "@/content/firm";
-import { format } from "@/i18n/config";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { firm, legalEntity } from "@/content/firm";
+import { format, type Locale } from "@/i18n/config";
 import { Eyebrow } from "@/components/shared/primitives";
 import { Reveal } from "@/components/shared/reveal";
 import { Input } from "@/components/ui/input";
@@ -15,6 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ChoiceCard, ChoicePill, Field, Fieldset } from "./form-fields";
 import { ResultView } from "./result-view";
 import { createReference, getPriority } from "./evaluate";
+import { buildCaseMessage } from "./build-message";
 import type {
   AreaId,
   ClientType,
@@ -48,14 +58,29 @@ const defaultValues: FormValues = {
   consent: false,
 };
 
+const LAST_STEP = TOTAL_STEPS - 1;
+
+// Reglas del último paso. Se usan en el registro de los campos y también en
+// isContactValid, que valida de forma síncrona antes de abrir WhatsApp.
+const contactPatterns = {
+  phone: /^[+()\d\s-]{7,}$/,
+  email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+};
+
+const isContactValid = (v: FormValues) =>
+  v.name.trim() !== "" &&
+  contactPatterns.phone.test(v.phone) &&
+  contactPatterns.email.test(v.email) &&
+  v.consent;
+
 const keys = <T extends object>(o: T) => Object.keys(o) as (keyof T)[];
 
 export function CaseEvaluation({
   t,
-  firmSuffix,
+  lang,
 }: {
   t: EvaluationCopy;
-  firmSuffix: string;
+  lang: Locale;
 }) {
   const [step, setStep] = useState(0);
   const [result, setResult] = useState<EvaluationResult | null>(null);
@@ -68,10 +93,10 @@ export function CaseEvaluation({
     register,
     control,
     trigger,
-    handleSubmit,
+    getValues,
     reset,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormValues>({ mode: "onTouched", defaultValues });
 
   const area = useWatch({ control, name: "area" });
@@ -103,24 +128,34 @@ export function CaseEvaluation({
     }
   };
 
-  const onSubmit = async (values: FormValues) => {
-    // TODO: enviar a su backend, CRM o Formspree, por ejemplo:
-    // await fetch("/api/evaluacion", { method: "POST", body: JSON.stringify(values) })
-    await new Promise((r) => setTimeout(r, 900));
+  // Envío por WhatsApp. Todo es síncrono hasta window.open: los navegadores
+  // móviles bloquean la ventana si se abre después de un await o un setTimeout.
+  // No hay backend: los datos solo salen del navegador en el mensaje de WhatsApp.
+  const sendViaWhatsApp = () => {
+    const values = getValues();
+    if (!isContactValid(values)) {
+      // Sin datos válidos no se abre nada; trigger solo pinta los errores
+      void trigger(stepFields[LAST_STEP], { shouldFocus: true });
+      return;
+    }
 
-    const res: EvaluationResult = {
-      ref: createReference(),
+    const ref = createReference();
+    const priority = getPriority(values);
+    const whatsappUrl = buildWhatsAppUrl(
+      buildCaseMessage({ t, lang, values, ref, priority })
+    );
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+    setResult({
+      ref,
       firstName: values.name.trim().split(" ")[0],
       area: values.area as AreaId,
       situation: values.situation,
-      priority: getPriority(values),
-    };
-    setResult(res);
+      priority,
+      whatsappUrl,
+    });
     toast.success(t.toast.title, {
-      description: format(t.toast.description, {
-        ref: res.ref,
-        time: t.result.responseTimes[res.priority],
-      }),
+      description: format(t.toast.description, { ref }),
     });
   };
 
@@ -157,9 +192,14 @@ export function CaseEvaluation({
 
         <ul className="mt-10 space-y-5 text-sm">
           <li className="flex gap-3">
-            <Phone aria-hidden className="mt-0.5 size-4 text-gold-deep" />
-            <a href={`tel:${firm.phone.replace(/\s/g, "")}`} className="hover:underline">
-              {firm.phone}
+            <MessageCircle aria-hidden className="mt-0.5 size-4 text-gold-deep" />
+            <a
+              href={buildWhatsAppUrl("")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              WhatsApp: {firm.whatsapp}
             </a>
           </li>
           <li className="flex gap-3">
@@ -235,14 +275,13 @@ export function CaseEvaluation({
                 key={step}
                 {...slide}
                 noValidate
-                onSubmit={
-                  step === TOTAL_STEPS - 1
-                    ? handleSubmit(onSubmit)
-                    : (e) => {
-                        e.preventDefault();
-                        next();
-                      }
-                }
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  // El evento submit nace del clic (o de Enter): sigue contando
+                  // como gesto del usuario para window.open
+                  if (step === LAST_STEP) sendViaWhatsApp();
+                  else void next();
+                }}
               >
                 <h3
                   ref={headingRef}
@@ -402,7 +441,9 @@ export function CaseEvaluation({
                           autoComplete="name"
                           className="h-11"
                           aria-invalid={!!errors.name}
-                          {...register("name", { required: f.name.required })}
+                          {...register("name", {
+                            validate: (v) => v.trim() !== "" || f.name.required,
+                          })}
                         />
                       </Field>
                       <Field id="phone" label={f.phone.label} error={errors.phone?.message}>
@@ -414,7 +455,7 @@ export function CaseEvaluation({
                           aria-invalid={!!errors.phone}
                           {...register("phone", {
                             required: f.phone.required,
-                            pattern: { value: /^[+()\d\s-]{7,}$/, message: f.phone.invalid },
+                            pattern: { value: contactPatterns.phone, message: f.phone.invalid },
                           })}
                         />
                       </Field>
@@ -429,7 +470,7 @@ export function CaseEvaluation({
                         {...register("email", {
                           required: f.email.required,
                           pattern: {
-                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            value: contactPatterns.email,
                             message: f.email.invalid,
                           },
                         })}
@@ -458,8 +499,16 @@ export function CaseEvaluation({
                           aria-describedby={errors.consent ? "consent-error" : undefined}
                           {...register("consent", { required: f.consent.required })}
                         />
-                        {format(f.consent.text, { firm: `${firm.name} ${firmSuffix}` })}
+                        {format(f.consent.text, { firm: legalEntity.name })}
                       </label>
+                      <a
+                        href={`/${lang}/legal/privacidad`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1 ml-8 inline-block text-sm font-semibold text-navy-900 underline underline-offset-4 hover:text-gold-deep"
+                      >
+                        {f.consent.privacyLink}
+                      </a>
                       {errors.consent && (
                         <p id="consent-error" className="mt-2 text-sm text-destructive">
                           {errors.consent.message}
@@ -486,22 +535,26 @@ export function CaseEvaluation({
                   )}
                   <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="inline-flex min-h-12 items-center gap-2 rounded-full bg-navy-900 px-6 text-sm font-semibold text-white transition-[background-color,transform] duration-150 hover:bg-navy-800 active:scale-[0.97] focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none disabled:opacity-70"
+                    className="inline-flex min-h-12 items-center gap-2 rounded-full bg-navy-900 px-6 text-sm font-semibold text-white transition-[background-color,transform] duration-150 hover:bg-navy-800 active:scale-[0.97] focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none"
                   >
-                    {isSubmitting ? (
+                    {step < LAST_STEP ? (
                       <>
-                        <Loader2 aria-hidden className="size-4 animate-spin" />
-                        {t.actions.sending}
+                        {t.actions.next}
+                        <ArrowRight aria-hidden className="size-4" />
                       </>
                     ) : (
                       <>
-                        {step < TOTAL_STEPS - 1 ? t.actions.next : t.actions.submit}
-                        <ArrowRight aria-hidden className="size-4" />
+                        <Send aria-hidden className="size-4" />
+                        {t.actions.submit}
                       </>
                     )}
                   </button>
                 </div>
+                {step === LAST_STEP && (
+                  <p className="mt-4 text-right text-xs text-muted-foreground">
+                    {t.actions.whatsappNote}
+                  </p>
+                )}
               </motion.form>
             )}
           </div>

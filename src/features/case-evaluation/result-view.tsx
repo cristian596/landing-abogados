@@ -1,4 +1,10 @@
-import { CheckCircle2, FileText, RotateCcw, UserRound } from "lucide-react";
+import {
+  CheckCircle2,
+  FileText,
+  MessageCircle,
+  RotateCcw,
+  UserRound,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { areaLawyer, teamMembers } from "@/content/firm";
 import { format } from "@/i18n/config";
@@ -43,6 +49,19 @@ export function ResultView({
       </h3>
       <p className="mt-3 text-muted-foreground">
         {format(t.result.contactIn, { time })}
+      </p>
+      {/* Respaldo si el navegador bloqueó la ventana de WhatsApp */}
+      <p className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+        {t.result.reopenHint}
+        <a
+          href={result.whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full bg-gold px-5 font-semibold text-navy-950 transition-[background-color,transform] duration-150 hover:bg-gold-light active:scale-[0.97]"
+        >
+          <MessageCircle aria-hidden className="size-4" />
+          {t.result.reopen}
+        </a>
       </p>
 
       <dl className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-3">

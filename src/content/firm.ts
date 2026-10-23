@@ -5,13 +5,33 @@ const img = (id: string, w = 1200) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75`;
 
 export const firm = {
+  // Marca de demostración: cámbiela por el nombre comercial del cliente
   name: "Altamira Ferrer",
-  phone: "+00 600 123 456",
-  email: "consultas@altamiraferrer.com",
-  address: "Av. de la Constitución 1450, piso 12",
-  city: "Ciudad Capital",
+
+  // TODO: sustituir por el WhatsApp del cliente, con prefijo de país.
+  // Formato libre ("+34 600 123 456" o "34600123456"): se limpia al generar el enlace.
+  // Mientras sea un placeholder, el formulario abre WhatsApp sin destinatario.
+  whatsapp: "[NÚMERO DE WHATSAPP]",
+
+  email: "[CORREO ELECTRÓNICO]",
+  address: "[DIRECCIÓN]",
+  city: "[CIUDAD]",
   rating: "4,9",
   copyrightYear: 2026,
+};
+
+// Datos del titular para el aviso legal, la privacidad y el consentimiento.
+// TODO: completar con los datos reales del despacho y revisarlos con un abogado.
+export const legalEntity = {
+  name: "[NOMBRE DEL DESPACHO]",
+  taxId: "[NIF/CIF]",
+  registry: "[NÚMERO DE REGISTRO]",
+  bar: "[COLEGIO DE ABOGADOS]",
+  address: firm.address,
+  city: firm.city,
+  email: firm.email,
+  whatsapp: firm.whatsapp,
+  updated: "[FECHA DE ACTUALIZACIÓN]",
 };
 
 export const images = {

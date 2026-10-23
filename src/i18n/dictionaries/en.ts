@@ -274,8 +274,9 @@ const en: Dictionary = {
         options: { llamada: "Phone call", email: "Email", whatsapp: "WhatsApp" },
       },
       consent: {
-        text: "I agree that {firm} may use this information only to assess my case and contact me.",
-        required: "We need your permission to contact you.",
+        text: "I agree to send this information via WhatsApp to {firm} so they can assess my case and contact me. The website does not store it.",
+        privacyLink: "Privacy policy",
+        required: "We need your permission to send the enquiry.",
       },
     },
     areas: {
@@ -334,19 +335,22 @@ const en: Dictionary = {
     actions: {
       back: "Back",
       next: "Continue",
-      submit: "Send assessment",
-      sending: "Sending…",
+      submit: "Send via WhatsApp",
       noCommitment: "No obligation",
+      whatsappNote:
+        "WhatsApp will open with your enquiry already written. You just need to press send.",
     },
     toast: {
-      title: "Assessment sent",
-      description: "Reference {ref}. We'll contact you {time}.",
+      title: "Opening WhatsApp",
+      description: "Reference {ref}. Press send in WhatsApp to complete your enquiry.",
     },
     result: {
       reference: "Reference {ref}",
-      thanks: "Thank you, {name}. We have your case.",
+      thanks: "Thank you, {name}. Your enquiry is ready in WhatsApp.",
       contactIn:
-        "A lawyer will contact you {time}. Here's our first read:",
+        "Press send in WhatsApp so it reaches us. A lawyer will then reply {time}. Here's our first read:",
+      reopenHint: "WhatsApp didn't open?",
+      reopen: "Open WhatsApp again",
       area: "Area",
       priority: "Priority",
       lawyer: "Assigned lawyer",
@@ -360,6 +364,23 @@ const en: Dictionary = {
         media: "within 24 business hours",
         normal: "within 48 business hours",
       },
+    },
+    whatsapp: {
+      title: "New case assessment · {firm}",
+      reference: "Reference",
+      priority: "Priority",
+      area: "Area",
+      lawyer: "Assigned lawyer",
+      clientType: "Client type",
+      name: "Name",
+      phone: "Phone",
+      email: "Email",
+      contactPref: "Prefers contact by",
+      urgency: "Urgency",
+      openProcess: "Open proceedings or deadline",
+      deadline: "Deadline",
+      noDeadline: "Not given",
+      description: "Description",
     },
   },
 
@@ -375,8 +396,123 @@ const en: Dictionary = {
     hoursText: "Monday to Friday · 8:30 am to 6:30 pm",
     hoursNote: "Employment emergencies and summonses: same-day response.",
     rights: "All rights reserved.",
-    legal: ["Legal notice", "Privacy", "Cookies"],
+    legal: [
+      { label: "Legal notice", slug: "aviso-legal" },
+      { label: "Privacy", slug: "privacidad" },
+      { label: "Cookies", slug: "cookies" },
+    ],
     credit: "Built with Claude Web Builder by",
+  },
+
+  // TEMPLATE FOR GUIDANCE ONLY: a lawyer must review these texts before publishing.
+  legal: {
+    backHome: "Back to home",
+    updated: "Last updated: {updated}",
+    pages: {
+      "aviso-legal": {
+        title: "Legal notice",
+        sections: [
+          {
+            heading: "Website owner",
+            paragraphs: [
+              "This website belongs to {name}, tax ID {taxId}, registered at {address}, {city}.",
+              "Email: {email}. WhatsApp: {whatsapp}.",
+              "The firm's lawyers are members of the {bar} under registration number {registry}.",
+            ],
+          },
+          {
+            heading: "Purpose",
+            paragraphs: [
+              "This website describes the legal services of {name} and lets you send an initial enquiry via WhatsApp. The information published is general and is not legal advice for any specific case.",
+            ],
+          },
+          {
+            heading: "Liability",
+            paragraphs: [
+              "{name} is not liable for decisions made on the basis of the general information on this site without first consulting a professional, nor for the content of linked third-party sites.",
+            ],
+          },
+          {
+            heading: "Intellectual property",
+            paragraphs: [
+              "The text, design and brand of this site belong to {name} or are used under licence. They may not be reproduced without permission.",
+            ],
+          },
+          {
+            heading: "Governing law",
+            paragraphs: [
+              "This legal notice is governed by [GOVERNING LAW]. Any dispute shall be submitted to the courts of {city}.",
+            ],
+          },
+        ],
+      },
+      privacidad: {
+        title: "Privacy policy",
+        sections: [
+          {
+            heading: "Data controller",
+            paragraphs: [
+              "{name}, tax ID {taxId}, registered at {address}, {city}. Contact: {email}.",
+            ],
+          },
+          {
+            heading: "What data we process and how it reaches us",
+            paragraphs: [
+              "The case assessment form does not store any data on this website. When you press \"Send via WhatsApp\", your browser opens WhatsApp with a message containing what you entered: name, phone, email, legal area, urgency, deadlines and case description.",
+              "We only receive your data if you send that message from your own WhatsApp.",
+            ],
+          },
+          {
+            heading: "Purpose and legal basis",
+            paragraphs: [
+              "We use your data to assess your enquiry and contact you. The legal basis is your consent, which you can withdraw at any time.",
+            ],
+          },
+          {
+            heading: "Recipients",
+            paragraphs: [
+              "The message is transmitted through WhatsApp, a service of WhatsApp LLC / Meta Platforms, subject to its own terms and privacy policy. This may involve international data transfers.",
+              "We do not share your data with other third parties unless required by law.",
+            ],
+          },
+          {
+            heading: "Retention",
+            paragraphs: [
+              "We keep the conversation for [RETENTION PERIOD] or for as long as the professional relationship lasts, and afterwards for the periods required by law.",
+            ],
+          },
+          {
+            heading: "Your rights",
+            paragraphs: [
+              "You can exercise your rights of access, rectification, erasure, objection, restriction and portability by writing to {email}. You may also lodge a complaint with [DATA PROTECTION AUTHORITY].",
+              "Applicable rules: [APPLICABLE DATA PROTECTION LAW].",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Cookie policy",
+        sections: [
+          {
+            heading: "Which cookies this site uses",
+            paragraphs: [
+              "This site uses a single technical cookie, NEXT_LOCALE, which remembers the language chosen with the ES/EN switch for one year. It contains no personal data.",
+              "We do not use analytics, advertising or social media cookies.",
+            ],
+          },
+          {
+            heading: "How to disable them",
+            paragraphs: [
+              "You can delete or block cookies in your browser settings. If you block NEXT_LOCALE, the site will keep working and show your browser's language.",
+            ],
+          },
+          {
+            heading: "Contact",
+            paragraphs: ["For any questions about this policy, write to {email}."],
+          },
+        ],
+      },
+    },
   },
 };
 

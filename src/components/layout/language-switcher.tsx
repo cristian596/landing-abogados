@@ -17,10 +17,13 @@ function rememberLocale(locale: Locale) {
 export function LanguageSwitcher({
   current,
   label,
+  path = "",
   className,
 }: {
   current: Locale;
   label: string;
+  /** Ruta tras el idioma, p. ej. "/legal/privacidad"; vacía en la portada */
+  path?: string;
   className?: string;
 }) {
   const go = (e: React.MouseEvent<HTMLAnchorElement>, locale: Locale) => {
@@ -30,7 +33,7 @@ export function LanguageSwitcher({
     // Navegación completa a propósito: con router.push el scroll no cae en el
     // #hash porque la página cambia de alto entre idiomas
     // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-    window.location.assign(`/${locale}${window.location.hash}`);
+    window.location.assign(`/${locale}${path}${window.location.hash}`);
   };
 
   return (
@@ -41,7 +44,7 @@ export function LanguageSwitcher({
           return (
             <li key={locale}>
               <a
-                href={`/${locale}`}
+                href={`/${locale}${path}`}
                 hrefLang={locale}
                 lang={locale}
                 aria-label={localeSwitch[locale].label}

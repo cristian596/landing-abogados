@@ -1,17 +1,24 @@
 import { firm } from "@/content/firm";
+import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { GoldLink } from "@/components/shared/primitives";
 import { Logo } from "@/components/layout/logo";
 
+// Los enlaces llevan /{idioma} delante para funcionar también desde las páginas legales
 export function Footer({
+  lang,
   t,
   nav,
   suffix,
 }: {
+  lang: Locale;
   t: Dictionary["footer"];
   nav: Dictionary["nav"]["items"];
   suffix: string;
 }) {
+  const home = `/${lang}`;
+
   return (
     <footer className="p-2 sm:p-3">
       <div className="rounded-[1.75rem] bg-navy-950 px-5 pt-16 pb-8 text-white sm:rounded-[2.25rem] sm:px-10">
@@ -21,12 +28,12 @@ export function Footer({
               {t.ctaLead}{" "}
               <em className="font-normal text-gold italic">{t.ctaAccent}</em>
             </p>
-            <GoldLink href="#consulta">{t.cta}</GoldLink>
+            <GoldLink href={`${home}#consulta`}>{t.cta}</GoldLink>
           </div>
 
           <div className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <Logo suffix={suffix} />
+              <Logo suffix={suffix} href={home} />
               <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/65">
                 {t.tagline}
               </p>
@@ -38,7 +45,7 @@ export function Footer({
               <ul className="mt-4 space-y-2 text-sm text-white/75">
                 {nav.map((n) => (
                   <li key={n.href}>
-                    <a href={n.href} className="hover:text-white">
+                    <a href={`${home}${n.href}`} className="hover:text-white">
                       {n.label}
                     </a>
                   </li>
@@ -57,10 +64,12 @@ export function Footer({
                 </p>
                 <p>
                   <a
-                    href={`tel:${firm.phone.replace(/\s/g, "")}`}
+                    href={buildWhatsAppUrl("")}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-white"
                   >
-                    {firm.phone}
+                    WhatsApp: {firm.whatsapp}
                   </a>
                 </p>
                 <p>
@@ -85,9 +94,12 @@ export function Footer({
             </p>
             <ul className="flex flex-wrap gap-5">
               {t.legal.map((item) => (
-                <li key={item}>
-                  <a href="#" className="hover:text-white">
-                    {item}
+                <li key={item.slug}>
+                  <a
+                    href={`${home}/legal/${item.slug}`}
+                    className="hover:text-white"
+                  >
+                    {item.label}
                   </a>
                 </li>
               ))}

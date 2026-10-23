@@ -276,8 +276,9 @@ const es = {
         options: { llamada: "Llamada", email: "Correo", whatsapp: "WhatsApp" },
       },
       consent: {
-        text: "Acepto que {firm} use estos datos solo para evaluar mi caso y contactarme.",
-        required: "Necesitamos su autorización para contactarle.",
+        text: "Acepto enviar estos datos por WhatsApp a {firm} para que evalúe mi caso y me contacte. El sitio web no los guarda.",
+        privacyLink: "Política de privacidad",
+        required: "Necesitamos su autorización para enviar la consulta.",
       },
     },
     areas: {
@@ -336,19 +337,22 @@ const es = {
     actions: {
       back: "Atrás",
       next: "Continuar",
-      submit: "Enviar evaluación",
-      sending: "Enviando…",
+      submit: "Enviar por WhatsApp",
       noCommitment: "Sin compromiso",
+      whatsappNote:
+        "Se abrirá WhatsApp con su consulta ya escrita. Solo tiene que pulsar enviar.",
     },
     toast: {
-      title: "Evaluación enviada",
-      description: "Referencia {ref}. Le contactaremos {time}.",
+      title: "Abrimos WhatsApp",
+      description: "Referencia {ref}. Pulse enviar en WhatsApp para completar la consulta.",
     },
     result: {
       reference: "Referencia {ref}",
-      thanks: "Gracias, {name}. Ya tenemos su caso.",
+      thanks: "Gracias, {name}. Su consulta está lista en WhatsApp.",
       contactIn:
-        "Un abogado le contactará {time}. Esto es lo que vemos de entrada:",
+        "Pulse enviar en WhatsApp para que nos llegue. Después, un abogado le responderá {time}. Esto es lo que vemos de entrada:",
+      reopenHint: "¿No se abrió WhatsApp?",
+      reopen: "Abrir WhatsApp de nuevo",
       area: "Área",
       priority: "Prioridad",
       lawyer: "Abogado asignado",
@@ -362,6 +366,24 @@ const es = {
         media: "en menos de 24 horas hábiles",
         normal: "en menos de 48 horas hábiles",
       },
+    },
+    // Etiquetas del mensaje que llega al WhatsApp del despacho
+    whatsapp: {
+      title: "Nueva evaluación de caso · {firm}",
+      reference: "Referencia",
+      priority: "Prioridad",
+      area: "Área",
+      lawyer: "Abogado asignado",
+      clientType: "Tipo de cliente",
+      name: "Nombre",
+      phone: "Teléfono",
+      email: "Correo",
+      contactPref: "Prefiere contacto por",
+      urgency: "Urgencia",
+      openProcess: "Proceso o plazo abierto",
+      deadline: "Fecha límite",
+      noDeadline: "Sin indicar",
+      description: "Descripción",
     },
   },
 
@@ -377,8 +399,124 @@ const es = {
     hoursText: "Lunes a viernes · 8:30 a 18:30",
     hoursNote: "Urgencias laborales y citaciones: atendemos el mismo día.",
     rights: "Todos los derechos reservados.",
-    legal: ["Aviso legal", "Privacidad", "Cookies"],
+    legal: [
+      { label: "Aviso legal", slug: "aviso-legal" },
+      { label: "Privacidad", slug: "privacidad" },
+      { label: "Cookies", slug: "cookies" },
+    ],
     credit: "Hecho con Claude Web Builder de",
+  },
+
+  // Páginas legales. Los {marcadores} se rellenan con legalEntity (src/content/firm.ts).
+  // PLANTILLA ORIENTATIVA: un abogado debe revisar estos textos antes de publicarlos.
+  legal: {
+    backHome: "Volver al inicio",
+    updated: "Última actualización: {updated}",
+    pages: {
+      "aviso-legal": {
+        title: "Aviso legal",
+        sections: [
+          {
+            heading: "Titular del sitio web",
+            paragraphs: [
+              "Este sitio web pertenece a {name}, con NIF/CIF {taxId} y domicilio en {address}, {city}.",
+              "Correo electrónico: {email}. WhatsApp: {whatsapp}.",
+              "Los abogados del despacho están colegiados en el {bar} con el número de registro {registry}.",
+            ],
+          },
+          {
+            heading: "Objeto",
+            paragraphs: [
+              "Este sitio informa sobre los servicios jurídicos de {name} y permite enviar una consulta inicial por WhatsApp. La información publicada es general y no constituye asesoramiento legal para un caso concreto.",
+            ],
+          },
+          {
+            heading: "Responsabilidad",
+            paragraphs: [
+              "{name} no se hace responsable de las decisiones tomadas a partir de la información general de este sitio sin una consulta profesional previa, ni de los contenidos de sitios de terceros enlazados.",
+            ],
+          },
+          {
+            heading: "Propiedad intelectual",
+            paragraphs: [
+              "Los textos, el diseño y la marca de este sitio pertenecen a {name} o se usan con licencia. No se permite su reproducción sin autorización.",
+            ],
+          },
+          {
+            heading: "Legislación aplicable",
+            paragraphs: [
+              "Este aviso legal se rige por [LEGISLACIÓN APLICABLE]. Para cualquier controversia, las partes se someten a los juzgados y tribunales de {city}.",
+            ],
+          },
+        ],
+      },
+      privacidad: {
+        title: "Política de privacidad",
+        sections: [
+          {
+            heading: "Responsable del tratamiento",
+            paragraphs: [
+              "{name}, NIF/CIF {taxId}, con domicilio en {address}, {city}. Contacto: {email}.",
+            ],
+          },
+          {
+            heading: "Qué datos tratamos y cómo llegan",
+            paragraphs: [
+              "El formulario de evaluación de caso no guarda ningún dato en este sitio web. Al pulsar «Enviar por WhatsApp», su navegador abre WhatsApp con un mensaje que contiene los datos que usted ha escrito: nombre, teléfono, correo, área legal, urgencia, plazos y descripción del caso.",
+              "Los datos solo nos llegan si usted envía ese mensaje desde su WhatsApp.",
+            ],
+          },
+          {
+            heading: "Finalidad y base legal",
+            paragraphs: [
+              "Usamos sus datos para evaluar su consulta y contactarle. La base legal es su consentimiento, que puede retirar en cualquier momento.",
+            ],
+          },
+          {
+            heading: "Destinatarios",
+            paragraphs: [
+              "El mensaje se transmite a través de WhatsApp, servicio de WhatsApp LLC / Meta Platforms, sujeto a sus propias condiciones y política de privacidad. Puede implicar transferencias internacionales de datos.",
+              "No cedemos sus datos a otros terceros salvo obligación legal.",
+            ],
+          },
+          {
+            heading: "Conservación",
+            paragraphs: [
+              "Conservamos la conversación durante [PLAZO DE CONSERVACIÓN] o mientras dure la relación profesional, y después durante los plazos que exija la ley.",
+            ],
+          },
+          {
+            heading: "Sus derechos",
+            paragraphs: [
+              "Puede ejercer sus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a {email}. También puede reclamar ante [AUTORIDAD DE PROTECCIÓN DE DATOS].",
+              "Normativa de referencia: [NORMATIVA DE PROTECCIÓN DE DATOS APLICABLE].",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Política de cookies",
+        sections: [
+          {
+            heading: "Qué cookies usa este sitio",
+            paragraphs: [
+              "Este sitio usa una única cookie técnica, NEXT_LOCALE, que recuerda el idioma elegido con el selector ES/EN durante un año. No contiene datos personales.",
+              "No usamos cookies de analítica, publicidad ni redes sociales.",
+            ],
+          },
+          {
+            heading: "Cómo desactivarlas",
+            paragraphs: [
+              "Puede borrar o bloquear las cookies desde la configuración de su navegador. Si bloquea NEXT_LOCALE, el sitio seguirá funcionando y mostrará el idioma de su navegador.",
+            ],
+          },
+          {
+            heading: "Contacto",
+            paragraphs: ["Para cualquier duda sobre esta política, escriba a {email}."],
+          },
+        ],
+      },
+    },
   },
 };
 

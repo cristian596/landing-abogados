@@ -4,14 +4,16 @@ import { firm } from "@/content/firm";
 
 export function Logo({
   suffix,
+  href = "#inicio",
   className,
 }: {
   suffix: string;
+  href?: string;
   className?: string;
 }) {
   return (
     <a
-      href="#inicio"
+      href={href}
       className={cn("flex items-center gap-2.5 text-white", className)}
     >
       <span className="grid size-9 place-items-center rounded-full border border-gold/60 text-gold">
