@@ -3,7 +3,13 @@ import { BadgeCheck, Scale, Star } from "lucide-react";
 import { firm, images } from "@/content/firm";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { GoldLink } from "@/components/shared/primitives";
-import { Reveal } from "@/components/shared/reveal";
+import { cn } from "@/lib/utils";
+
+// Entrada solo con CSS: corre en el primer pintado, sin esperar a la hidratación
+const enter =
+  "animate-in fade-in-0 motion-safe:slide-in-from-bottom-6 duration-400 ease-out fill-mode-backwards";
+// Literales completos: Tailwind no detecta clases construidas con plantillas
+const statDelays = ["delay-240", "delay-300", "delay-350", "delay-400"];
 
 export function Hero({ t }: { t: Dictionary["hero"] }) {
   return (
@@ -35,26 +41,28 @@ export function Hero({ t }: { t: Dictionary["hero"] }) {
 
         <div className="mx-auto max-w-7xl px-5 pt-32 sm:px-10 sm:pt-40 lg:pt-44">
           <div className="max-w-2xl">
-            <Reveal>
+            <div className={enter}>
               <p className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-navy-950/60 px-3 py-1.5 text-xs font-semibold tracking-wide text-gold-light">
                 <BadgeCheck aria-hidden className="size-4" />
                 {t.registry}
               </p>
-            </Reveal>
-            <Reveal delay={0.08}>
+            </div>
+            <div className={cn(enter, "delay-60")}>
               <h1 className="mt-6 text-fluid-2xl leading-[1.02] font-semibold tracking-tight text-balance">
                 {t.titleLead}{" "}
                 <em className="font-normal text-gold italic">{t.titleAccent}</em>
               </h1>
-            </Reveal>
-            <Reveal delay={0.16}>
+            </div>
+            <div className={cn(enter, "delay-120")}>
               <p className="mt-6 max-w-lg text-fluid-base leading-relaxed text-white/75">
                 {t.intro}
               </p>
-            </Reveal>
-            <Reveal
-              delay={0.24}
-              className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4"
+            </div>
+            <div
+              className={cn(
+                enter,
+                "delay-180 mt-9 flex flex-wrap items-center gap-x-6 gap-y-4"
+              )}
             >
               <GoldLink href="#consulta">{t.cta}</GoldLink>
               <div className="flex items-center gap-3 text-sm">
@@ -70,16 +78,18 @@ export function Hero({ t }: { t: Dictionary["hero"] }) {
                   · {t.reviews}
                 </span>
               </div>
-            </Reveal>
+            </div>
           </div>
 
           <ul className="mt-20 grid grid-cols-2 border-t border-white/15 sm:mt-28 lg:grid-cols-4">
             {t.stats.map((s, i) => (
-              <Reveal
-                as="li"
+              <li
                 key={s.label}
-                delay={0.3 + i * 0.06}
-                className="border-white/15 py-7 pr-4 max-lg:odd:border-r max-lg:even:pl-5 max-lg:[&:nth-child(-n+2)]:border-b lg:pl-8 lg:first:pl-0 lg:[&:not(:first-child)]:border-l"
+                className={cn(
+                  enter,
+                  statDelays[i],
+                  "border-white/15 py-7 pr-4 max-lg:odd:border-r max-lg:even:pl-5 max-lg:[&:nth-child(-n+2)]:border-b lg:pl-8 lg:first:pl-0 lg:[&:not(:first-child)]:border-l"
+                )}
               >
                 <span className="font-heading text-4xl font-semibold sm:text-5xl">
                   {s.value}
@@ -88,7 +98,7 @@ export function Hero({ t }: { t: Dictionary["hero"] }) {
                 <span className="mt-2 block text-sm text-white/65">
                   {s.label}
                 </span>
-              </Reveal>
+              </li>
             ))}
           </ul>
         </div>
