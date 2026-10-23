@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { localeAlternates } from "@/lib/site-url";
 import { hasLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { Navbar } from "@/components/layout/navbar";
@@ -11,6 +13,14 @@ import { Team } from "@/components/sections/team";
 import { Process } from "@/components/sections/process";
 import { CaseEvaluation } from "@/features/case-evaluation/case-evaluation";
 import { ScrollToHash } from "@/components/shared/scroll-to-hash";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/[lang]">): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  return { alternates: localeAlternates(lang, (l) => `/${l}`) };
+}
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;

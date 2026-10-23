@@ -4,6 +4,7 @@ import { Manrope, Playfair_Display } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { hasLocale, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { metadataBase } from "@/lib/site-url";
 import "../globals.css";
 
 // Los nombres de variable no pueden coincidir con --font-heading / --font-body
@@ -19,6 +20,9 @@ const text = Manrope({
   display: "swap",
 });
 
+// Solo existen /es y /en; cualquier otro idioma da 404
+export const dynamicParams = false;
+
 // Prerenderiza /es y /en en el build
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -31,16 +35,11 @@ export async function generateMetadata({
   if (!hasLocale(lang)) return {};
   const { meta } = await getDictionary(lang);
 
+  // canonical y hreflang los define cada página (ver src/lib/site-url.ts)
   return {
-    metadataBase: new URL(
-      process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
-    ),
+    metadataBase,
     title: meta.title,
     description: meta.description,
-    alternates: {
-      canonical: `/${lang}`,
-      languages: Object.fromEntries(locales.map((l) => [l, `/${l}`])),
-    },
     openGraph: {
       title: meta.title,
       description: meta.ogDescription,

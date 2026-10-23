@@ -15,6 +15,12 @@ const en: Dictionary = {
     skipLink: "Skip to the case assessment",
   },
 
+  notFound: {
+    title: "Page not found",
+    text: "The address you opened does not exist or has changed.",
+    cta: "Back to home",
+  },
+
   nav: {
     items: [
       { label: "Practice areas", href: "#especialidades" },
@@ -473,6 +479,7 @@ const en: Dictionary = {
             paragraphs: [
               "The message is transmitted through WhatsApp, a service of WhatsApp LLC / Meta Platforms, subject to its own terms and privacy policy. This may involve international data transfers.",
               "We do not share your data with other third parties unless required by law.",
+              "The demo photographs are loaded from images.unsplash.com, which receives the visitor's IP address. If they are replaced with your own photos hosted on this site, remove this paragraph.",
             ],
           },
           {
@@ -496,14 +503,14 @@ const en: Dictionary = {
           {
             heading: "Which cookies this site uses",
             paragraphs: [
-              "This site uses a single technical cookie, NEXT_LOCALE, which remembers the language chosen with the ES/EN switch for one year. It contains no personal data.",
-              "We do not use analytics, advertising or social media cookies.",
+              "This site does not set any cookies. We do not use analytics, advertising or social media tools.",
+              "The language is chosen with the ES/EN switch and is part of the address (/es or /en), so it does not need to be stored.",
             ],
           },
           {
-            heading: "How to disable them",
+            heading: "If external services are added",
             paragraphs: [
-              "You can delete or block cookies in your browser settings. If you block NEXT_LOCALE, the site will keep working and show your browser's language.",
+              "If analytics, a map, videos or any other cookie-setting service is added in the future, this policy must be updated and, where the law requires it, prior consent must be requested.",
             ],
           },
           {

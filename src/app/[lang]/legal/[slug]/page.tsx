@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { firm, legalEntity } from "@/content/firm";
 import { format, hasLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary, type Dictionary } from "@/i18n/get-dictionary";
+import { localeAlternates } from "@/lib/site-url";
 import { Logo } from "@/components/layout/logo";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { Footer } from "@/components/layout/footer";
@@ -15,9 +16,8 @@ const slugs: Slug[] = ["aviso-legal", "privacidad", "cookies"];
 const isSlug = (value: string): value is Slug =>
   (slugs as string[]).includes(value);
 
-// Páginas estáticas a las que se llega con enlaces normales (navegación completa),
-// así que no necesitan el "shell" instantáneo de la navegación en cliente.
-export const instant = false;
+// Solo existen las rutas listadas aquí; cualquier otro slug da 404
+export const dynamicParams = false;
 
 // Prerenderiza las 3 páginas legales en cada idioma
 export function generateStaticParams() {
@@ -34,14 +34,10 @@ async function load(params: PageProps<"/[lang]/legal/[slug]">["params"]) {
 export async function generateMetadata({
   params,
 }: PageProps<"/[lang]/legal/[slug]">): Promise<Metadata> {
-  const { page, slug } = await load(params);
+  const { lang, page, slug } = await load(params);
   return {
     title: `${page.title} | ${firm.name}`,
-    alternates: {
-      languages: Object.fromEntries(
-        locales.map((l) => [l, `/${l}/legal/${slug}`])
-      ),
-    },
+    alternates: localeAlternates(lang, (l) => `/${l}/legal/${slug}`),
   };
 }
 

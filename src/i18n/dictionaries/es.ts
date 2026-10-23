@@ -16,6 +16,12 @@ const es = {
     skipLink: "Ir a la evaluación del caso",
   },
 
+  notFound: {
+    title: "Página no encontrada",
+    text: "La dirección que ha abierto no existe o ha cambiado.",
+    cta: "Volver al inicio",
+  },
+
   nav: {
     items: [
       { label: "Especialidades", href: "#especialidades" },
@@ -477,6 +483,7 @@ const es = {
             paragraphs: [
               "El mensaje se transmite a través de WhatsApp, servicio de WhatsApp LLC / Meta Platforms, sujeto a sus propias condiciones y política de privacidad. Puede implicar transferencias internacionales de datos.",
               "No cedemos sus datos a otros terceros salvo obligación legal.",
+              "Las fotografías de demostración se cargan desde images.unsplash.com, que recibe la dirección IP del visitante. Si se sustituyen por fotos propias alojadas en este sitio, elimine este párrafo.",
             ],
           },
           {
@@ -500,14 +507,14 @@ const es = {
           {
             heading: "Qué cookies usa este sitio",
             paragraphs: [
-              "Este sitio usa una única cookie técnica, NEXT_LOCALE, que recuerda el idioma elegido con el selector ES/EN durante un año. No contiene datos personales.",
-              "No usamos cookies de analítica, publicidad ni redes sociales.",
+              "Este sitio no instala cookies. No usamos herramientas de analítica, publicidad ni redes sociales.",
+              "El idioma se elige con el selector ES/EN y forma parte de la dirección (/es o /en), así que no hace falta guardarlo.",
             ],
           },
           {
-            heading: "Cómo desactivarlas",
+            heading: "Si se añaden servicios externos",
             paragraphs: [
-              "Puede borrar o bloquear las cookies desde la configuración de su navegador. Si bloquea NEXT_LOCALE, el sitio seguirá funcionando y mostrará el idioma de su navegador.",
+              "Si en el futuro se incorpora analítica, un mapa, vídeos u otro servicio que use cookies, esta política deberá actualizarse y, cuando la ley lo exija, pedirse el consentimiento previo.",
             ],
           },
           {

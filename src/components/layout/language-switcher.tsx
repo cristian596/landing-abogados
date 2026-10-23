@@ -2,16 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import {
-  LOCALE_COOKIE,
   localeSwitch,
   locales,
   type Locale,
 } from "@/i18n/config";
-
-// Recuerda la elección un año; el proxy la usa al entrar por "/"
-function rememberLocale(locale: Locale) {
-  document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
-}
 
 // Cambia entre /es y /en conservando la sección (#hash) en la que está el visitante
 export function LanguageSwitcher({
@@ -29,7 +23,6 @@ export function LanguageSwitcher({
   const go = (e: React.MouseEvent<HTMLAnchorElement>, locale: Locale) => {
     e.preventDefault();
     if (locale === current) return;
-    rememberLocale(locale);
     // Navegación completa a propósito: con router.push el scroll no cae en el
     // #hash porque la página cambia de alto entre idiomas
     // eslint-disable-next-line @next/next/no-location-assign-relative-destination
