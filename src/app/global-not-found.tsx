@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { firm } from "@/content/firm";
 import { defaultLocale } from "@/i18n/config";
 import "./globals.css";
 
@@ -8,7 +9,7 @@ import "./globals.css";
 const target = `/${defaultLocale}`;
 
 export const metadata: Metadata = {
-  title: "Altamira Ferrer",
+  title: firm.name,
   robots: { index: false },
 };
 

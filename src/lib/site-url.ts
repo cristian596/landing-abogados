@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { locales, type Locale } from "@/i18n/config";
+import { IS_DEMO } from "@/lib/demo";
 
 // Dominio público del sitio. Se define en el build (variable de entorno en
 // Cloudflare Pages). Sin él no se emiten canonical ni hreflang: es mejor no
@@ -14,7 +15,7 @@ export function localeAlternates(
   lang: Locale,
   pathFor: (locale: Locale) => string
 ): Metadata["alternates"] {
-  if (!siteUrl) return undefined;
+  if (!siteUrl || IS_DEMO) return undefined;
   return {
     canonical: pathFor(lang),
     languages: Object.fromEntries(locales.map((l) => [l, pathFor(l)])),

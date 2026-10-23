@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { firm, legalEntity } from "@/content/firm";
 import { format, hasLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary, type Dictionary } from "@/i18n/get-dictionary";
+import { DEMO_LEGAL_NOTICE, IS_DEMO } from "@/lib/demo";
 import { localeAlternates } from "@/lib/site-url";
 import { Logo } from "@/components/layout/logo";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
@@ -68,6 +69,11 @@ export default async function LegalPage({
           <ArrowLeft aria-hidden className="size-4" />
           {t.legal.backHome}
         </a>
+        {IS_DEMO && (
+          <p className="mt-6 rounded-md border border-gold/40 bg-gold/10 px-4 py-3 text-sm font-semibold text-navy-900">
+            {DEMO_LEGAL_NOTICE[lang]}
+          </p>
+        )}
         <h1 className="mt-6 text-fluid-xl leading-tight font-semibold text-navy-900">
           {page.title}
         </h1>

@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Manrope, Playfair_Display } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
-import { hasLocale, locales } from "@/i18n/config";
+import { format, hasLocale, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { firm } from "@/content/firm";
+import { IS_DEMO } from "@/lib/demo";
 import { metadataBase } from "@/lib/site-url";
 import "../globals.css";
 
@@ -34,18 +36,20 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!hasLocale(lang)) return {};
   const { meta } = await getDictionary(lang);
+  const title = format(meta.title, { name: firm.name });
 
   // canonical y hreflang los define cada página (ver src/lib/site-url.ts)
   return {
     metadataBase,
-    title: meta.title,
+    title,
     description: meta.description,
     openGraph: {
-      title: meta.title,
+      title,
       description: meta.ogDescription,
       locale: meta.ogLocale,
       type: "website",
     },
+    ...(IS_DEMO && { robots: { index: false, follow: false } }),
   };
 }
 

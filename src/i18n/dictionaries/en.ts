@@ -2,7 +2,7 @@ import type { Dictionary } from "./es";
 
 const en: Dictionary = {
   meta: {
-    title: "Altamira Ferrer Law Firm | Business, employment and civil law",
+    title: "{name} Law Firm | Business, employment and civil law",
     description:
       "Law firm focused on business, employment and civil law. Get your case assessed online and hear back from a lawyer within one business day.",
     ogDescription:

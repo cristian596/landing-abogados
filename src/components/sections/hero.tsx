@@ -3,6 +3,7 @@ import { BadgeCheck, Scale, Star } from "lucide-react";
 import { firm, images } from "@/content/firm";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { GoldLink } from "@/components/shared/primitives";
+import { IS_DEMO } from "@/lib/demo";
 import { cn } from "@/lib/utils";
 
 // Entrada solo con CSS: corre en el primer pintado, sin esperar a la hidratación
@@ -44,7 +45,7 @@ export function Hero({ t }: { t: Dictionary["hero"] }) {
             <div className={enter}>
               <p className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-navy-950/60 px-3 py-1.5 text-xs font-semibold tracking-wide text-gold-light">
                 <BadgeCheck aria-hidden className="size-4" />
-                {t.registry}
+                {IS_DEMO ? t.registry.replace("04521", "DEMO-000") : t.registry}
               </p>
             </div>
             <div className={cn(enter, "delay-60")}>

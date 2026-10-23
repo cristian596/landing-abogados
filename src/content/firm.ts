@@ -1,12 +1,14 @@
 // Datos que no dependen del idioma: contacto, imágenes y nombres propios.
 // Los textos traducibles están en src/i18n/dictionaries.
 
+import { DEMO_FIRM, IS_DEMO } from "@/lib/demo";
+
 const img = (id: string, w = 1200) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75`;
 
-export const firm = {
-  // Marca de demostración: cámbiela por el nombre comercial del cliente
-  name: "Altamira Ferrer",
+const templateFirm = {
+  // TODO: sustituir por el nombre comercial del cliente
+  name: "[NOMBRE DEL DESPACHO]",
 
   // TODO: sustituir por el WhatsApp del cliente, con prefijo de país.
   // Formato libre ("+34 600 123 456" o "34600123456"): se limpia al generar el enlace.
@@ -20,9 +22,20 @@ export const firm = {
   copyrightYear: 2026,
 };
 
+export const firm = IS_DEMO
+  ? {
+      ...templateFirm,
+      name: DEMO_FIRM.name,
+      whatsapp: DEMO_FIRM.whatsapp,
+      email: DEMO_FIRM.email,
+      address: DEMO_FIRM.address,
+      city: DEMO_FIRM.city,
+    }
+  : templateFirm;
+
 // Datos del titular para el aviso legal, la privacidad y el consentimiento.
 // TODO: completar con los datos reales del despacho y revisarlos con un abogado.
-export const legalEntity = {
+const templateLegalEntity = {
   name: "[NOMBRE DEL DESPACHO]",
   taxId: "[NIF/CIF]",
   registry: "[NÚMERO DE REGISTRO]",
@@ -33,6 +46,17 @@ export const legalEntity = {
   whatsapp: firm.whatsapp,
   updated: "[FECHA DE ACTUALIZACIÓN]",
 };
+
+export const legalEntity = IS_DEMO
+  ? {
+      ...templateLegalEntity,
+      name: DEMO_FIRM.legalName,
+      taxId: DEMO_FIRM.taxId,
+      registry: DEMO_FIRM.registry,
+      bar: DEMO_FIRM.bar,
+      updated: DEMO_FIRM.updated,
+    }
+  : templateLegalEntity;
 
 export const images = {
   hero: img("1519085360753-af0119f7cbe7", 1000),

@@ -3,7 +3,7 @@
 
 const es = {
   meta: {
-    title: "Altamira Ferrer Abogados | Derecho empresarial, laboral y civil",
+    title: "{name} Abogados | Derecho empresarial, laboral y civil",
     description:
       "Despacho de abogados especializado en derecho empresarial, laboral y civil. Evalúe su caso en línea y reciba respuesta de un abogado en 24 horas hábiles.",
     ogDescription:

@@ -143,3 +143,17 @@ El soporte gratuito del proveedor dura **[PLAZO DE SOPORTE]** desde la entrega, 
 ## 9. Licencia
 
 El uso de este proyecto está sujeto a los términos del archivo **LICENSE.md**. El soporte, la personalización y el uso comercial se rigen por ese documento.
+
+---
+
+## 10. Build de demostración (solo para el proveedor)
+
+`npm run demo -- https://tu-demo.pages.dev` genera `dist-demo/` con datos ficticios, `noindex` y sin canonical/hreflang. `npm run build` no cambia: sigue mostrando los marcadores `[ ]`.
+
+**WhatsApp de pruebas:** la demo lee el número de la variable de entorno `NEXT_PUBLIC_WHATSAPP_NUMBER` (con prefijo de país, solo dígitos). No lo escribas en el código. En PowerShell:
+
+```
+$env:NEXT_PUBLIC_WHATSAPP_NUMBER="573000000000"; npm run demo -- https://tu-demo.pages.dev
+```
+
+Si la variable no está definida, el script avisa y el formulario de la demo no podrá enviar mensajes.
