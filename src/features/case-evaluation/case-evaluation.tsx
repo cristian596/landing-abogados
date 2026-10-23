@@ -83,6 +83,7 @@ export function CaseEvaluation({
   lang: Locale;
 }) {
   const [step, setStep] = useState(0);
+  const [dir, setDir] = useState<1 | -1>(1);
   const [result, setResult] = useState<EvaluationResult | null>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const lastKey = useRef<string | null>(null);
@@ -130,6 +131,7 @@ export function CaseEvaluation({
     const current = step;
     if (await trigger(stepFields[current], { shouldFocus: true })) {
       // Valor absoluto: un doble clic no puede saltarse un paso
+      setDir(1);
       setStep(current + 1);
     }
   };
@@ -168,13 +170,17 @@ export function CaseEvaluation({
   const restart = () => {
     reset();
     setResult(null);
+    setDir(1);
     setStep(0);
   };
 
   // Solo animación de entrada: el paso anterior se desmonta al instante
   // para que nunca se pueda pulsar su botón con el estado nuevo
   const slide = {
-    initial: { opacity: 0, transform: reduce ? "none" : "translateX(16px)" },
+    initial: {
+      opacity: 0,
+      transform: reduce ? "none" : `translateX(${dir * 16}px)`,
+    },
     animate: { opacity: 1, transform: "translateX(0px)" },
     transition: { duration: 0.22, ease: [0.23, 1, 0.32, 1] as const },
   };
@@ -528,7 +534,10 @@ export function CaseEvaluation({
                   {step > 0 ? (
                     <button
                       type="button"
-                      onClick={() => setStep(step - 1)}
+                      onClick={() => {
+                        setDir(-1);
+                        setStep(step - 1);
+                      }}
                       className="inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold text-navy-900 transition-[background-color,transform] duration-150 hover:bg-muted active:scale-[0.97]"
                     >
                       <ArrowLeft aria-hidden className="size-4" />
