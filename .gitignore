@@ -19,7 +19,6 @@
 
 # production
 /build
-/plans
 
 # misc
 .DS_Store
