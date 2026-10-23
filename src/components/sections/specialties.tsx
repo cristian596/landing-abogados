@@ -143,7 +143,7 @@ export function Specialties({ t }: { t: Dictionary["specialties"] }) {
                         alt=""
                         fill
                         sizes="(min-width: 1280px) 24vw, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 85vw"
-                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                        className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]"
                       />
                     </div>
                     <div className="mt-5 flex flex-1 items-end justify-between gap-4">

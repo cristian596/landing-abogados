@@ -51,7 +51,7 @@ export function Team({ t }: { t: Dictionary["team"] }) {
                       alt={format(t.portraitOf, { name: person.name })}
                       fill
                       sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover grayscale-[35%] transition-[filter,transform] duration-500 ease-out group-hover:scale-[1.03] group-hover:grayscale-0"
+                      className="object-cover grayscale-[35%] transition-[filter,transform] duration-300 ease-out group-hover:scale-[1.03] group-hover:grayscale-0"
                     />
                     <span className="absolute bottom-4 left-4 rounded-full bg-navy-950/80 px-3 py-1 text-xs font-semibold text-gold-light backdrop-blur">
                       {copy.area}

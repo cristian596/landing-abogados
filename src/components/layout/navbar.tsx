@@ -76,7 +76,7 @@ export function Navbar({
           <Sheet>
             <SheetTrigger
               aria-label={t.openMenu}
-              className="grid size-11 place-items-center rounded-full border border-white/20 text-white active:scale-[0.97] lg:hidden"
+              className="grid size-11 place-items-center rounded-full border border-white/20 text-white transition-transform duration-150 ease-out active:scale-[0.97] lg:hidden"
             >
               <Menu className="size-5" />
             </SheetTrigger>
@@ -110,7 +110,7 @@ export function Navbar({
                 <SheetClose asChild>
                   <a
                     href="#consulta"
-                    className="mt-8 flex min-h-12 items-center justify-center rounded-full bg-gold font-semibold text-navy-950 active:scale-[0.97]"
+                    className="mt-8 flex min-h-12 items-center justify-center rounded-full bg-gold font-semibold text-navy-950 transition-transform duration-150 ease-out active:scale-[0.97]"
                   >
                     {t.cta}
                   </a>
