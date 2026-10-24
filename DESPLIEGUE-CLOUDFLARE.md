@@ -59,6 +59,7 @@ Para la primera subida, es más sencillo usar GitHub Desktop o pedir ayuda a alg
    | Variable | Valor |
    | --- | --- |
    | `NEXT_PUBLIC_SITE_URL` | Tu dominio con `https://`, sin barra final. Por ejemplo `https://midespacho.com`. |
+   | `NEXT_PUBLIC_GA_ID` | Opcional. ID de medición de Google Analytics (`G-XXXXXXXXXX`). Sin ella, el interruptor de analítica del panel de cookies no tiene efecto y no se carga ningún script. |
 
    Sin esta variable, la web no genera las etiquetas `canonical` ni `hreflang`, que ayudan a Google a encontrar las versiones en español e inglés.
 

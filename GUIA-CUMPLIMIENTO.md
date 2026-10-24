@@ -74,7 +74,7 @@ Los textos de la plantilla tienen marcadores para `[LEGISLACIÓN APLICABLE]` y `
 
 ## 6. Cookies y servicios de terceros
 
-- **La web no usa cookies propias.** La página de cookies lo indica. Si el despacho añade analítica u otra herramienta, debe actualizar esa página y, según la normativa aplicable, pedir consentimiento antes de activarla.
+- **Cookies y analítica.** El pie de página tiene un enlace «Configurar cookies» que abre un panel con dos categorías: técnicas (siempre activas) y analítica (desactivada por defecto). La analítica solo se carga si el visitante la activa y si existe la variable `NEXT_PUBLIC_GA_ID`. La elección se guarda en el navegador del visitante (`localStorage`, clave `preferencias-cookies`). La página de cookies es un borrador: el abogado debe revisarla y completar los marcadores del servicio de analítica, la finalidad y el plazo de conservación. Si el despacho añade otra herramienta, debe actualizar esa página y, según la normativa aplicable, pedir consentimiento antes de activarla.
 - **Imágenes de Unsplash.** Las fotos de la plantilla se cargan directamente desde los servidores de Unsplash. Al visitar la web, el navegador del visitante contacta con esos servidores, y el visitante puede quedar identificado por su dirección IP. La política de privacidad debe mencionarlo. **Si el despacho publica con fotos propias, puede retirar esa mención.**
 - **Fuentes y otros recursos externos.** Revisa si la plantilla carga recursos de terceros y declara cualquiera que el despacho mantenga.
 

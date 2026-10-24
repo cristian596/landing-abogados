@@ -411,6 +411,19 @@ const es = {
       { label: "Cookies", slug: "cookies" },
     ],
     credit: "Hecho con Claude Web Builder de",
+    cookieSettings: "Configurar cookies",
+    cookiePanel: {
+      title: "Preferencias de cookies",
+      description:
+        "Elija qué cookies permite en este sitio. Puede cambiar su elección cuando quiera desde el pie de página.",
+      technicalTitle: "Cookies técnicas",
+      technicalText: "Necesarias para que el sitio funcione. Siempre activas.",
+      analyticsTitle: "Analítica",
+      analyticsText:
+        "Nos ayuda a medir el uso del sitio para mejorarlo. Desactivada por defecto.",
+      save: "Guardar y cerrar",
+      policyLink: "Más información en la política de cookies",
+    },
   },
 
   // Páginas legales. Los {marcadores} se rellenan con legalEntity (src/content/firm.ts).
@@ -507,14 +520,23 @@ const es = {
           {
             heading: "Qué cookies usa este sitio",
             paragraphs: [
-              "Este sitio no instala cookies. No usamos herramientas de analítica, publicidad ni redes sociales.",
-              "El idioma se elige con el selector ES/EN y forma parte de la dirección (/es o /en), así que no hace falta guardarlo.",
+              "[BORRADOR PENDIENTE DE REVISIÓN POR UN ABOGADO. No publicar sin revisar.]",
+              "Este sitio distingue dos categorías: cookies técnicas y analítica. No usamos publicidad ni redes sociales.",
             ],
           },
           {
-            heading: "Si se añaden servicios externos",
+            heading: "Cookies técnicas",
             paragraphs: [
-              "Si en el futuro se incorpora analítica, un mapa, vídeos u otro servicio que use cookies, esta política deberá actualizarse y, cuando la ley lo exija, pedirse el consentimiento previo.",
+              "Son las necesarias para que el sitio funcione. Están siempre activas y no se pueden desactivar.",
+              "El idioma se elige con el selector ES/EN y forma parte de la dirección (/es o /en), así que no hace falta guardarlo. Su elección sobre las cookies se guarda en el almacenamiento local de su navegador (clave preferencias-cookies), solo en su dispositivo.",
+            ],
+          },
+          {
+            heading: "Analítica",
+            paragraphs: [
+              "La analítica nos ayuda a medir el uso del sitio para mejorarlo. Está desactivada por defecto: solo se activa si usted la permite en «Configurar cookies», en el pie de página, y solo se carga a partir de ese momento y en sus visitas siguientes.",
+              "Puede retirar su permiso en cualquier momento desde el mismo enlace. Si desactiva la analítica después de haberla activado, la herramienta puede seguir cargada hasta que cierre o recargue la página; en las visitas siguientes no se cargará.",
+              "Servicio de analítica: [SERVICIO DE ANALÍTICA Y PROVEEDOR]. Finalidad y plazo de conservación: [FINALIDAD Y PLAZO DE CONSERVACIÓN].",
             ],
           },
           {

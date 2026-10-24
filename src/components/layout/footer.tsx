@@ -4,6 +4,7 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { GoldLink } from "@/components/shared/primitives";
 import { Logo } from "@/components/layout/logo";
+import { CookieSettings } from "@/components/layout/cookie-settings";
 
 // Los enlaces llevan /{idioma} delante para funcionar también desde las páginas legales
 export function Footer({
@@ -103,17 +104,16 @@ export function Footer({
                   </a>
                 </li>
               ))}
+              <li>
+                <CookieSettings
+                  lang={lang}
+                  label={t.cookieSettings}
+                  t={t.cookiePanel}
+                  className="cursor-pointer hover:text-white"
+                />
+              </li>
             </ul>
           </div>
-          <p className="mt-8 text-center text-sm text-white/45">
-            {t.credit}{" "}
-            <a
-              href="https://tododeia.com"
-              className="underline-offset-4 hover:underline"
-            >
-              Tododeia
-            </a>
-          </p>
         </div>
       </div>
     </footer>

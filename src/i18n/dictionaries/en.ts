@@ -408,6 +408,19 @@ const en: Dictionary = {
       { label: "Cookies", slug: "cookies" },
     ],
     credit: "Built with Claude Web Builder by",
+    cookieSettings: "Cookie settings",
+    cookiePanel: {
+      title: "Cookie preferences",
+      description:
+        "Choose which cookies you allow on this site. You can change your choice at any time from the footer.",
+      technicalTitle: "Technical cookies",
+      technicalText: "Necessary for the site to work. Always active.",
+      analyticsTitle: "Analytics",
+      analyticsText:
+        "Helps us measure how the site is used so we can improve it. Off by default.",
+      save: "Save and close",
+      policyLink: "More information in the cookie policy",
+    },
   },
 
   // TEMPLATE FOR GUIDANCE ONLY: a lawyer must review these texts before publishing.
@@ -503,14 +516,23 @@ const en: Dictionary = {
           {
             heading: "Which cookies this site uses",
             paragraphs: [
-              "This site does not set any cookies. We do not use analytics, advertising or social media tools.",
-              "The language is chosen with the ES/EN switch and is part of the address (/es or /en), so it does not need to be stored.",
+              "[DRAFT PENDING REVIEW BY A LAWYER. Do not publish without review.]",
+              "This site distinguishes two categories: technical cookies and analytics. We do not use advertising or social media tools.",
             ],
           },
           {
-            heading: "If external services are added",
+            heading: "Technical cookies",
             paragraphs: [
-              "If analytics, a map, videos or any other cookie-setting service is added in the future, this policy must be updated and, where the law requires it, prior consent must be requested.",
+              "These are necessary for the site to work. They are always active and cannot be turned off.",
+              "The language is chosen with the ES/EN switch and is part of the address (/es or /en), so it does not need to be stored. Your cookie choice is saved in your browser's local storage (key preferencias-cookies), on your device only.",
+            ],
+          },
+          {
+            heading: "Analytics",
+            paragraphs: [
+              "Analytics helps us measure how the site is used so we can improve it. It is off by default: it is only turned on if you allow it in \"Cookie settings\", in the footer, and it is only loaded from then on and on your later visits.",
+              "You can withdraw your permission at any time from the same link. If you turn analytics off after turning it on, the tool may stay loaded until you close or reload the page; it will not be loaded on later visits.",
+              "Analytics service: [ANALYTICS SERVICE AND PROVIDER]. Purpose and retention period: [PURPOSE AND RETENTION PERIOD].",
             ],
           },
           {
