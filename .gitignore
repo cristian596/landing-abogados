@@ -42,3 +42,6 @@ next-env.d.ts
 
 # demo build
 /dist-demo/
+
+# assets de LinkedIn (no forman parte de la plantilla)
+/linkedin-assets/
