@@ -129,7 +129,7 @@ Las rutas sin idioma (`/`, `/legal/...`) se redirigen con reglas explícitas en 
 
 ## 8. Soporte y próximos pasos
 
-El soporte gratuito del proveedor dura **[PLAZO DE SOPORTE]** desde la entrega, con respuesta en **[TIEMPO DE RESPUESTA]**. El mantenimiento posterior se contrata aparte: la personalización de textos, fotos, colores, idiomas adicionales, integraciones y contenido legal se presupuesta por separado. Ver `LICENSE.md`.
+El soporte incluido en la compra dura **tres (3) meses** desde la compra, por correo electrónico o WhatsApp, y cubre errores de la plantilla tal como fue entregada y su instalación básica. La personalización de textos, fotos, colores, idiomas adicionales, integraciones y contenido legal se presupuesta por separado. Ver `Licencia.md`, cláusula 8.
 
 **Si algo se rompe:**
 
@@ -142,7 +142,7 @@ El soporte gratuito del proveedor dura **[PLAZO DE SOPORTE]** desde la entrega, 
 
 ## 9. Licencia
 
-El uso de este proyecto está sujeto a los términos del archivo **LICENSE.md**. El soporte, la personalización y el uso comercial se rigen por ese documento.
+Copyright (C) 2026 Camilo Higuera. Todos los derechos reservados. El uso de este proyecto está sujeto a los términos del archivo **Licencia.md**. El soporte, la personalización, la garantía y el uso comercial se rigen por ese documento.
 
 ---
 

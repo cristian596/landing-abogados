@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2026 Camilo Higuera. Todos los derechos reservados.
+ * Licencia sujeta a los términos en Licencia.md
+ */
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Manrope, Playfair_Display } from "next/font/google";

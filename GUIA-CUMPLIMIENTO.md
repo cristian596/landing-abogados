@@ -118,4 +118,4 @@ Un abogado del país del despacho debe confirmar la norma aplicable y ajustar lo
 
 ## 10. Responsabilidad
 
-La plantilla es una herramienta. La información que se publique, los textos legales y el uso que el despacho haga de los datos de sus clientes son responsabilidad del despacho. Los términos del uso de la plantilla están en `LICENSE.md`, que se completará con el texto revisado por el abogado del proveedor.
+La plantilla es una herramienta. La información que se publique, los textos legales y el uso que el despacho haga de los datos de sus clientes son responsabilidad del despacho. Los términos del uso de la plantilla están en `Licencia.md`. Es un documento modelo que debe revisar un abogado antes de usarse comercialmente.

@@ -2,6 +2,9 @@
   "name": "altamira-ferrer-abogados",
   "version": "0.1.0",
   "private": true,
+  "license": "SEE LICENSE IN Licencia.md",
+  "author": "Camilo Higuera <info@camilohiguera.com>",
+  "copyright": "Copyright (C) 2026 Camilo Higuera. Todos los derechos reservados. Licencia sujeta a los términos en Licencia.md",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
